@@ -7,12 +7,14 @@ double bubble_sort(int *array, int size);
 double selection_sort(int *array, int size);
 double shell_sort(int *array, int size);
 double intermediate_merge(int *array, int left, int right);
+double intermediate_quick(int *array, int left, int right, int called);
+double intermediate_heap(int *array, int size, int type);
 void write_archive(double time, int *array, int size_array, char *archive_name);
 const char* get_algorithm_name(char algorithm);
 
 
 // Chama o algoritmo e cria as pastas
-void process_file(char algorithm, char order, int *array, int size){
+void process_file(char algorithm, char order, int *array, int size, int called){
     char text[80], text_1[100], text_2[100], order_t;
     double time_out;
     const char * algorithm_name = get_algorithm_name(algorithm);
@@ -40,6 +42,8 @@ void process_file(char algorithm, char order, int *array, int size){
         case 's':   time_out = selection_sort(array, size); break;
         case 'h':   time_out = shell_sort(array, size); break;
         case 'm':   time_out = intermediate_merge(array, 0, size); break;
+        case 'q':   time_out = intermediate_quick(array, 0, size, called); break;
+        case 'H':   time_out = intermediate_heap(array, size, called); break;
     }
 
     // Gera nomes para os arquivos de saída
@@ -51,7 +55,7 @@ void process_file(char algorithm, char order, int *array, int size){
 }
 
 // Cria tipo de array solicitado pelo usuário
-void create_array(char order, char algorithm, int max_size){
+void create_array(char order, char algorithm, int max_size, int called){
     int j;
     const int sizes[] = {10, 100, 1000, 10000, 100000, 1000000};
     char text[80], text_1[100], text_2[100];              // atenção com valor para evitar estouro de buffer em sprintf
@@ -60,6 +64,7 @@ void create_array(char order, char algorithm, int max_size){
 
 
     switch(order){
+
         // valores aleatórios
         case 'r':
             srand(time(NULL));
@@ -70,7 +75,7 @@ void create_array(char order, char algorithm, int max_size){
                 for (int i = 0; i < sizes[j]; i++){
                     array[i] = rand();
                 }
-                process_file(algorithm, order, array, sizes[j]);
+                process_file(algorithm, order, array, sizes[j], called);
             }break;
 
         // valores crescentes
@@ -82,18 +87,20 @@ void create_array(char order, char algorithm, int max_size){
                 for (int i = 0; i < sizes[j]; i++){
                     array[i] = i;
                 }
-                process_file(algorithm, order, array, sizes[j]);
+                process_file(algorithm, order, array, sizes[j], called);
             }break;
+
         // valores decrescentes
         case 'd':
             for (j = 0; j < max_size;j++){
+                // aloca dinamicamente
                 array = (int *)malloc(sizes[j] * sizeof(int));
 
                 for (int i = 0; i < sizes[j]; i++){
                     array[i] = sizes[j] - i;
                     }
-                    process_file(algorithm, order, array, sizes[j]);
+                process_file(algorithm, order, array, sizes[j], called);
             }break;
     }
-
+    free(array);
 }
