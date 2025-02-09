@@ -1,5 +1,5 @@
 #include <time.h>
-#include "file_manager.h"
+#include <stdlib.h>
 
 void merge(int array[], int left, int mid, int right){
     int n1 = mid - left + 1;
