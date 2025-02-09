@@ -8,6 +8,20 @@
 
 // numeração 1, 2, 3 para gerar arquivo .txt de TEMPO: crescente, random e decrescente
 
+// retorna nome do algoritmo pela letra de entrada
+const char* get_algorithm_name(char algorithm) {
+    switch (algorithm) {
+        case 'i': return "Insertion Sort";
+        case 'b': return "Bubble Sort";
+        case 's': return "Selection Sort";
+        case 'h': return "Shell Sort";
+        case 'm': return "Merge Sort";
+        case 'q': return "Quick Sort";
+        case 'H': return "Heap Sort";
+    }
+}
+
+
 // Escreve arquivo .txt
 void write_archive(double time, int *array, int size_array, char *archive_name){
     FILE * arquivo;
@@ -34,17 +48,6 @@ void write_archive(double time, int *array, int size_array, char *archive_name){
     fclose(arquivo);
 }
 
-
-// retorna nome do algoritmo pela letra de entrada
-const char* get_algorithm_name(char algorithm) {
-    switch (algorithm) {
-        case 'i': return "Insertion Sort";
-        case 'b': return "Bubble Sort";
-        case 's': return "Selection Sort";
-        case 'h': return "Shell Sort";
-        case 'm': return "Merge Sort";
-    }
-}
 
 // Função única para gerar nomes de arquivos
 char *generate_filename(char algorithm, char type, int size, char *text) {
